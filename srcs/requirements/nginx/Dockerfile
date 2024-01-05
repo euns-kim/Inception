@@ -1,14 +1,22 @@
+# Use the penultimate version of Alpine Linux
 FROM alpine:3.18
 
-RUN apk update && apk upgrade
+# Update and upgrade Alpine Linux, install Nginx
+RUN apk update && apk upgrade \
+&& apk add --no-cache nginx openssl
 
-# RUN
-# install everything needed for nginx
+# Copy the TLS setup script into the container
+COPY ./tools/nginx_init.sh /tmp/nginx_init.sh
 
-# COPY ./conf/nginx.conf /etc/nginx/nginx.conf
+# Change the permissions of the ssl script
+RUN chmod +x /tmp/nginx_init.sh
 
-# COPY ./tools/nginx.sh /tmp/nginx.sh
+# Replace the configuration file with a self-written one
+COPY ./conf/nginx.conf /etc/nginx/nginx.conf
+COPY ./conf/conf.d/default.conf /etc/nginx/conf.d/default.conf
 
-# EXPOSE 443
+# Expose the port 443 (default HTTPS port)
+EXPOSE 443
 
-# CMD ["bash -sh", "-g", ";"]
+# Launch Nginx not in daemon mode
+CMD ["/tmp/nginx_init.sh"]

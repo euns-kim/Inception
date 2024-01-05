@@ -5,14 +5,15 @@ FROM alpine:3.18
 RUN apk update && apk upgrade \
 && apk add --no-cache mariadb mariadb-client
 
+# Make directories for the database and change the owner
 RUN mkdir -p var/run/mysqld && chown -R mysql:mysql var/run/mysqld \
 && mkdir -p /var/lib/mysql && chown -R mysql:mysql /var/lib/mysql
 
 # Copy the configuration script into the container
-COPY ./tools/mariadb_conf.sh /etc/mariadb_conf.sh
+COPY ./tools/mariadb_init.sh /etc/mariadb_init.sh
 
 # Change the permissions of the configuration script
-RUN chmod +x /etc/mariadb_conf.sh
+RUN chmod +x /etc/mariadb_init.sh
 
 # Replace the configuration file with a self-written one
 COPY ./conf/my.cnf /etc/my.cnf
@@ -26,4 +27,4 @@ EXPOSE 3306
 # Keep the container alive
 # CMD ["tail", "-f", "/dev/null"]
 
-ENTRYPOINT ["/etc/mariadb_conf.sh"]
+ENTRYPOINT ["/etc/mariadb_init.sh"]

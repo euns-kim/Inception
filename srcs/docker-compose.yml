@@ -1,47 +1,56 @@
 version: '3'
 
 services:
-
-  # nginx:
-  #   container_name: nginx
-  #   image: nginx:latest
-  #   ports:
-  #   - "8080:80"
-  #   # volumes:
-  #   #  - ./nginx_conf:/etc/nginx/conf.d
-  #   restart: always
+  nginx:
+    container_name: nginx
+    image: nginx
+    build:
+      context: ./requirements/nginx/
+    ports:
+      - "443:443"
+    networks:
+      - inception
+    volumes:
+      - ./requirements/nginx/tools/html:/var/www/html
+    restart: always
+    # depends_on:
+    #   - wordpress
 
   mariadb:
     container_name: mariadb
+    image: mariadb
     build:
       context: ./requirements/mariadb/
     ports:
       - "3306:3306"
     env_file:
       - .env
+    networks:
+      - inception
     volumes:
-      - db-data:/var/lib/mysql
+      - database:/var/lib/mysql
     restart: always
 
   # wordpress:
   #   container_name: wordpress
-  #   image: wordpress:latest
+  #   build:
+  #     context: ./requirements/wordpress/
   #   ports:
   #     - "8888:80"
-  #   environment:
-  #     WORDPRESS_DB_HOST: mariadb
-  #     WORDPRESS_DB_USER: wordpress
-  #     WORDPRESS_DB_PASSWORD: 123456
-  #     WORDPRESS_DB_NAME: db
+  #   env_file:
+  #     - .env
+  #   networks:
+  #     - inception
   #   # volumes:
-  #   #  - ./wordpress_conf:/var/www/html
+  #   #  - wordpress:/var/www/wordpress
   #   restart: always
-  #   depends_on:
-  #     - mariadb
+  #   # depends_on:
+  #   #   - mariadb
 
 volumes:
-  db-data:
+  database:
+  # wordpress:
 
-# networks:
-#   inception:
-#     driver: bridge
+networks:
+  inception:
+    driver: bridge
