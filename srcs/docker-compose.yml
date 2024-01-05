@@ -11,7 +11,7 @@ services:
     networks:
       - inception
     volumes:
-      - ./requirements/nginx/tools/html:/var/www/html
+      - ./requirements/nginx/tools/html:/var/www/
     restart: always
     # depends_on:
     #   - wordpress
@@ -28,7 +28,7 @@ services:
     networks:
       - inception
     volumes:
-      - database:/var/lib/mysql
+      - database:/var/lib/mysql/
     restart: always
 
   # wordpress:
