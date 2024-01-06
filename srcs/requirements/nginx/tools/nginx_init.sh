@@ -2,8 +2,9 @@
 
 # Generate a self-signed key and certificate
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
--keyout /etc/ssl/private/eunskim-selfsigned.key \
--out /etc/ssl/certs/eunskim-selfsigned.crt \
+-keyout ${PATH_SSL_KEY} \
+-out ${PATH_SSL_CERTS} \
  -subj "/C=DE/ST=BW/L=Heilbronn/O=42Heilbronn/OU=student/CN=localhost"
 
+# Start nginx in the foreground
 nginx -g "daemon off;"

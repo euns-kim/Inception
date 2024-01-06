@@ -1,56 +1,69 @@
 version: '3'
 
 services:
-  nginx:
-    container_name: nginx
-    image: nginx
-    build:
-      context: ./requirements/nginx/
-    ports:
-      - "443:443"
-    networks:
-      - inception
-    volumes:
-      - ./requirements/nginx/tools/html:/var/www/
-    restart: always
-    # depends_on:
-    #   - wordpress
-
   mariadb:
     container_name: mariadb
     image: mariadb
     build:
       context: ./requirements/mariadb/
-    ports:
-      - "3306:3306"
     env_file:
       - .env
     networks:
       - inception
     volumes:
-      - database:/var/lib/mysql/
+      - database:/var/lib/mysql
     restart: always
 
-  # wordpress:
-  #   container_name: wordpress
-  #   build:
-  #     context: ./requirements/wordpress/
-  #   ports:
-  #     - "8888:80"
-  #   env_file:
-  #     - .env
-  #   networks:
-  #     - inception
-  #   # volumes:
-  #   #  - wordpress:/var/www/wordpress
-  #   restart: always
-  #   # depends_on:
-  #   #   - mariadb
+  wordpress:
+    depends_on:
+      - mariadb
+    container_name: wordpress
+    image: wordpress
+    build:
+      context: ./requirements/wordpress/
+    env_file:
+      - .env
+    networks:
+      - inception
+    volumes:
+     - wordpress:/var/www/wordpress
+    restart: always
+
+
+  nginx:
+    depends_on:
+      - wordpress
+    container_name: nginx
+    image: nginx
+    build:
+      context: ./requirements/nginx/
+    env_file:
+      - .env
+    ports:
+      - "443:443"
+    networks:
+      - inception
+    volumes:
+      - wordpress:/var/www/wordpress
+    restart: always
 
 volumes:
   database:
-  # wordpress:
+    name: database
+    driver: local
+    # driver_opts:
+    #   o: "bind"
+    #   type: none
+      # device: /home/eunskim/data/database
+  wordpress:
+    name: wordpress
+    driver: local
+    # driver_opts:
+    #   o: "bind"
+    #   type: none
+      # device: /home/eunskim/data/wordpress
 
 networks:
   inception:
+    name: inception
     driver: bridge
