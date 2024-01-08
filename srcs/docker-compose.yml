@@ -3,7 +3,7 @@ version: '3'
 services:
   mariadb:
     container_name: mariadb
-    image: mariadb
+    image: mariadb:eunskim
     build:
       context: ./requirements/mariadb/
     env_file:
@@ -18,7 +18,7 @@ services:
     depends_on:
       - mariadb
     container_name: wordpress
-    image: wordpress
+    image: wordpress:eunskim
     build:
       context: ./requirements/wordpress/
     env_file:
@@ -34,7 +34,7 @@ services:
     depends_on:
       - wordpress
     container_name: nginx
-    image: nginx
+    image: nginx:eunskim
     build:
       context: ./requirements/nginx/
     env_file:

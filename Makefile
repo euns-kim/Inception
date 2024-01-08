@@ -28,4 +28,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all build down clean fclean re
+.PHONY: all build stop start status down clean fclean re
