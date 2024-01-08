@@ -19,7 +19,7 @@ sed -i -r "s/localhost/${WP_DB_HOST}/1" wp-config.php
 wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 chmod +x wp-cli.phar
 php82 wp-cli.phar core install \
---url="https://localhost" --title="Inception" \
+--url="${INCEPTION_URL}" --title="Inception" \
 --admin_user="${WP_ADMIN_USER}" --admin_password="${WP_ADMIN_PASSWORD}" \
 --admin_email="${WP_ADMIN_EMAIL}"
 

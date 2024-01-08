@@ -51,17 +51,17 @@ volumes:
   database:
     name: database
     driver: local
-    # driver_opts:
-    #   o: "bind"
-    #   type: none
-      # device: /home/eunskim/data/database
+    driver_opts:
+      o: "bind"
+      type: none
+      device: /home/eunskim/data/database
   wordpress:
     name: wordpress
     driver: local
-    # driver_opts:
-    #   o: "bind"
-    #   type: none
-      # device: /home/eunskim/data/wordpress
+    driver_opts:
+      o: "bind"
+      type: none
+      device: /home/eunskim/data/wordpress
 
 networks:
   inception:
